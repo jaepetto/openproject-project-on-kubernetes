@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app_role: cache
+  name: cache
+  namespace: openproject
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app_role: cache
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app_role: cache
+    spec:
+      containers:
+        - image: memcached
+          name: cache
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "0.2"
+              memory: "256Mi"
+      restartPolicy: Always
+status: {}

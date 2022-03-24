@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openproject-cache--memcache--server
+  namespace: openproject
+data:
+  openproject-cache--memcache--server: cache:11211

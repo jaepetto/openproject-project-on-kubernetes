@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rails-min-threads
+  namespace: openproject
+data:
+  rails-min-threads: "4"

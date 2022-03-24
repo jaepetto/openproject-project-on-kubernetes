@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app_role: proxy
+  name: proxy
+  namespace: openproject
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app_role: proxy
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app_role: proxy
+    spec:
+      containers:
+        - args:
+            - ./docker/prod/proxy
+          env:
+            - name: APP_HOST
+              value: web
+            - name: OPENPROJECT_RAILS__RELATIVE__URL__ROOT
+              valueFrom:
+                configMapKeyRef:
+                  name: openproject-rails--relative--url--root
+                  key: openproject-rails--relative--url--root
+          image: openproject/community:12
+          resources:
+            limits:
+              cpu: "2"
+              memory: "1Gi"
+            requests:
+              cpu: "2"
+              memory: "1Gi"
+
+          name: proxy
+          ports:
+            - containerPort: 80
+      restartPolicy: Always

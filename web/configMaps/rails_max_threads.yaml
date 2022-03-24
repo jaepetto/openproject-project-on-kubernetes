@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rails-max-threads
+  namespace: openproject
+data:
+  rails-max-threads: "16"

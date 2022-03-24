@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app_role: cron
+  name: cron
+  namespace: openproject
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app_role: cron
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app_role: cron
+    spec:
+      containers:
+        - args:
+            - ./docker/prod/cron
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-url
+                  key: database-url
+            - name: IMAP_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name: imap-enabled
+                  key: imap-enabled
+            - name: OPENPROJECT_CACHE__MEMCACHE__SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: openproject-cache--memcache--server
+                  key: openproject-cache--memcache--server
+            - name: OPENPROJECT_RAILS__RELATIVE__URL__ROOT
+              valueFrom:
+                configMapKeyRef:
+                  name: openproject-rails--relative--url--root
+                  key: openproject-rails--relative--url--root
+            - name: RAILS_CACHE_STORE
+              valueFrom:
+                configMapKeyRef:
+                  name: rails-cache-store
+                  key: rails-cache-store
+            - name: RAILS_MAX_THREADS
+              valueFrom:
+                configMapKeyRef:
+                  name: rails-max-threads
+                  key: rails-max-threads
+            - name: RAILS_MIN_THREADS
+              valueFrom:
+                configMapKeyRef:
+                  name: rails-min-threads
+                  key: rails-min-threads
+          image: openproject/community:12
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "0.2"
+              memory: "256Mi"
+          name: cron
+          volumeMounts:
+            - mountPath: /var/openproject/assets
+              name: opdata
+      restartPolicy: Always
+      volumes:
+        - name: opdata
+          persistentVolumeClaim:
+            claimName: opdata

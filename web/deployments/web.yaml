@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app_role: web
+  name: web
+  namespace: openproject
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app_role: web
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app_role: web
+    spec:
+      containers:
+        - args:
+            - ./docker/prod/web
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-url
+                  key: database-url
+            - name: IMAP_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  key: imap-enabled
+                  name: imap-enabled
+            - name: OPENPROJECT_CACHE__MEMCACHE__SERVER
+              valueFrom:
+                configMapKeyRef:
+                  key: openproject-cache--memcache--server
+                  name: openproject-cache--memcache--server
+            - name: OPENPROJECT_RAILS__RELATIVE__URL__ROOT
+              valueFrom:
+                configMapKeyRef:
+                  key: openproject-rails--relative--url--root
+                  name: openproject-rails--relative--url--root
+            - name: RAILS_CACHE_STORE
+              valueFrom:
+                configMapKeyRef:
+                  key: rails-cache-store
+                  name: rails-cache-store
+            - name: RAILS_MAX_THREADS
+              valueFrom:
+                configMapKeyRef:
+                  key: rails-max-threads
+                  name: rails-max-threads
+            - name: RAILS_MIN_THREADS
+              valueFrom:
+                configMapKeyRef:
+                  key: rails-min-threads
+                  name: rails-min-threads
+
+          image: openproject/community:12
+          resources:
+            limits:
+              cpu: '2'
+              memory: '1Gi'
+            requests:
+              cpu: '2'
+              memory: '1Gi'
+
+          livenessProbe:
+            exec:
+              command:
+                - curl
+                - -f
+                - http://localhost:8080/health_checks/default
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+          name: web
+          volumeMounts:
+            - mountPath: /var/openproject/assets
+              name: opdata
+      restartPolicy: Always
+      volumes:
+        - name: opdata
+          persistentVolumeClaim:
+            claimName: opdata
+status: {}
