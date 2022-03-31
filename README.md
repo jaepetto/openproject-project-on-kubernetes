@@ -31,6 +31,14 @@ data:
   database-url: <base64 encoded database url>
 ```
 
+### Namespace
+
+Note that you will need to create the namespace 'openproject' before running this.
+
+`kubectl create namespace openproject`
+
+You may create another namespace, but this change will have to be reflected in the yaml files (see below).
+
 ### Namespace (optional)
 
 As the default namespace is 'openproject', you'll need to replace this word by the name of your namespace.
