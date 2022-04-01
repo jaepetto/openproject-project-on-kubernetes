@@ -4,6 +4,12 @@ metadata:
   name: openproject-ingress
   namespace: openproject
 spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - op-musicology.epfl.ch
+    secretName: openproject-ssl
+
   rules:
   - host: op.jaep.ch
     http:
