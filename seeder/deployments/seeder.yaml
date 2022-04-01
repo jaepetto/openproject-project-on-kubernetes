@@ -7,9 +7,7 @@ metadata:
   namespace: openproject
 spec:
   containers:
-    - args:
-        - ./docker/prod/seeder
-      env:
+    - env:
         - name: DATABASE_URL
           valueFrom:
             secretKeyRef:
@@ -47,6 +45,8 @@ spec:
               name: rails-min-threads
       image: openproject/community:12
       name: seeder
+      command: ["/bin/sh"]
+      args: ["-c", "sed -i 's/chown -R .*ATTACHMENTS_STORAGE_PATH/#REMOVE CHOWN LINE/' $APP_PATH/docker/prod/entrypoint.sh; $APP_PATH/docker/prod/seeder"]
       resources:
             limits:
               cpu: "1"

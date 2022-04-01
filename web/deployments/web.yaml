@@ -18,9 +18,7 @@ spec:
         app_role: web
     spec:
       containers:
-        - args:
-            - ./docker/prod/web
-          env:
+        - env:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
@@ -77,6 +75,8 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 3
           name: web
+          command: ["/bin/sh"]
+          args: ["-c", "sed -i 's/chown -R .*ATTACHMENTS_STORAGE_PATH/#REMOVE CHOWN LINE/' $APP_PATH/docker/prod/entrypoint.sh; $APP_PATH/docker/prod/web"]
           volumeMounts:
             - mountPath: /var/openproject/assets
               name: opdata

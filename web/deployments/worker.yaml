@@ -18,9 +18,7 @@ spec:
         app_role: worker
     spec:
       containers:
-        - args:
-            - ./docker/prod/worker
-          env:
+        - env:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
@@ -58,6 +56,8 @@ spec:
                   name: rails-min-threads
           image: openproject/community:12
           name: worker
+          command: ["/bin/sh"]
+          args: ["-c", "sed -i 's/chown -R .*ATTACHMENTS_STORAGE_PATH/#REMOVE CHOWN LINE/' $APP_PATH/docker/prod/entrypoint.sh; $APP_PATH/docker/prod/worker"]
           resources:
             limits:
               cpu: "1"

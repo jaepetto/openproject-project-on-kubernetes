@@ -18,9 +18,7 @@ spec:
         app_role: cron
     spec:
       containers:
-        - args:
-            - ./docker/prod/cron
-          env:
+        - env:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
@@ -65,6 +63,8 @@ spec:
               cpu: "0.2"
               memory: "256Mi"
           name: cron
+          command: ["/bin/sh"]
+          args: ["-c", "sed -i 's/chown -R .*ATTACHMENTS_STORAGE_PATH/#REMOVE CHOWN LINE/' $APP_PATH/docker/prod/entrypoint.sh; $APP_PATH/docker/prod/cron"]
           volumeMounts:
             - mountPath: /var/openproject/assets
               name: opdata
