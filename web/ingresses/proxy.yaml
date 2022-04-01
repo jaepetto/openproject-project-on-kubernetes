@@ -11,7 +11,7 @@ spec:
     secretName: openproject-ssl
 
   rules:
-  - host: op.jaep.ch
+  - host: op-musicology.epfl.ch
     http:
       paths:
       - path: /
