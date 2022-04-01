@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: opdata        
+spec:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 1Ti
+  nfs:
+    path: /cdh_dcml_2_files_nfs/openproject/opdata
+    server: cdh1files.epfl.ch
