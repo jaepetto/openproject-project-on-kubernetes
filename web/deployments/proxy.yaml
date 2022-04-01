@@ -2,19 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app_role: proxy
-  name: proxy
+    name: lapin
+  name: lapin
   namespace: openproject
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app_role: proxy
-  strategy: {}
+      name: lapin
   template:
     metadata:
       labels:
-        app_role: proxy
+        name: lapin
     spec:
       containers:
         - args:
@@ -35,8 +34,7 @@ spec:
             requests:
               cpu: "2"
               memory: "1Gi"
-
-          name: proxy
+          name: lapin
           ports:
             - containerPort: 80
       restartPolicy: Always

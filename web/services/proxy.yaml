@@ -2,13 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app_role: proxy
-  name: proxy
+    name: lapin
+  name: lapin
   namespace: openproject
 spec:
+  type: LoadBalancer
   ports:
-    - name: "8080"
-      port: 8080
+    - name: "http"
+      port: 80
       targetPort: 80
+      protocol: TCP
   selector:
-    app_role: proxy
+    name: lapin
