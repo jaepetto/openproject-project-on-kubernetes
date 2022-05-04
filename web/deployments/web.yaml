@@ -70,11 +70,10 @@ spec:
               memory: '1Gi'
 
           livenessProbe:
-            exec:
-              command:
-                - curl
-                - -f
-                - http://localhost:8080/health_checks/default
+            httpGet:
+              path: /health_checks/default
+              port: 8080
+              scheme: HTTP
             failureThreshold: 3
             initialDelaySeconds: 30
             periodSeconds: 10
