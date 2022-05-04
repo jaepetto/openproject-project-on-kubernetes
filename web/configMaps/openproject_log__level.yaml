@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openproject-log--level
+  namespace: openproject
+data:
+  openproject-log--level: "debug"

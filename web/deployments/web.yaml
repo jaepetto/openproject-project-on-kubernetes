@@ -54,6 +54,11 @@ spec:
                 configMapKeyRef:
                   key: rails-min-threads
                   name: rails-min-threads
+            - name: OPENPROJECT_LOG__LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  key: openproject-log--level
+                  name: openproject-log--level
 
           image: openproject/community:12
           resources:
