@@ -63,10 +63,10 @@ spec:
           image: openproject/community:12
           resources:
             limits:
-              cpu: '2'
+              cpu: '1'
               memory: '1Gi'
             requests:
-              cpu: '2'
+              cpu: '1'
               memory: '1Gi'
 
           livenessProbe:
@@ -75,9 +75,9 @@ spec:
               port: 8080
               scheme: HTTP
             failureThreshold: 3
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 30
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 60
           name: web
           command: ["/bin/sh"]
           args: ["-c", "sed -i 's/chown -R .*ATTACHMENTS_STORAGE_PATH/#REMOVE CHOWN LINE/' $APP_PATH/docker/prod/entrypoint.sh; $APP_PATH/docker/prod/web"]
