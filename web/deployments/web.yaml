@@ -64,10 +64,10 @@ spec:
           resources:
             limits:
               cpu: '1'
-              memory: '1Gi'
+              memory: '2Gi'
             requests:
-              cpu: '1'
-              memory: '1Gi'
+              cpu: '500m'
+              memory: '64Mi'
 
           livenessProbe:
             httpGet:
